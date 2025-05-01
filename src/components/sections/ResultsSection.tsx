@@ -25,7 +25,7 @@ const ResultsSection = ({ website }: ResultsSectionProps) => {
         <div className="p-6 bg-gray-50 border-b">
           <h2 className="text-2xl font-bold text-gray-800">Results for {website.name}</h2>
           <p className="text-gray-600">
-            We've analyzed the website and generated the following sales agent training materials.
+            We've analyzed your website and generated the following sales agent training materials.
           </p>
         </div>
 

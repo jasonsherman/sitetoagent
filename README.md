@@ -1,47 +1,89 @@
-# SiteToAgent
+# 🤖 SiteToAgent – AI-Powered Sales Agent Generator & Knowledge Base Builder
 
-**AI-Powered Sales Agent Generator & Knowledge Base Builder**
+Paste a website URL → Scrape & Summarize → Generate Sales Scripts & Q&A → Download a Branded PDF.
 
-SiteToAgent transforms any business website into a complete AI sales agent training kit. It scrapes your site, summarizes your business, generates a downloadable knowledge base PDF, creates branded greeting scripts, and answers foundational sales questions—perfect for chatbot onboarding or sales team training.
+---
 
-## Features
+## ✨ Project Overview
 
-- **Website Scraper:** Crawls homepage and key subpages, extracting core content and sales copy.
-- **Content Summarizer:** Uses AI to summarize business, extract services, detect tone, and highlight differentiators.
-- **Greeting Script Generator:** Produces 5 unique, branded greetings in your site's voice.
-- **Sales Q&A Generator:** Auto-generates answers to 4 foundational sales questions.
-- **Knowledge Base PDF:** Compiles all insights into a clean, downloadable PDF.
-- **Export Options:** Download as PDF, TXT/Markdown, or JSON for chatbot integration.
+SiteToAgent is a microservice that transforms any business website into a complete AI sales agent training kit. Instantly scrape, analyze, and summarize a site, then generate:
+- A downloadable knowledge base PDF
+- 5 branded greeting scripts
+- 4 foundational sales Q&A answers
 
-## Tech Stack
+Perfect for chatbot onboarding, sales team training, or rapid business analysis.
+
+---
+
+## 💡 Why I Built This
+
+Most businesses struggle to quickly train AI sales agents on their unique value. I wanted a **simple**, **open-source**, **AI-powered** tool that:
+- Automates knowledge extraction from any website
+- Delivers ready-to-use sales content
+- Makes onboarding and sales enablement effortless
+
+---
+
+## ⚙️ Key Features
+
+- 🌐 Paste any business website URL
+- 🤖 AI-powered content summarization (business, services, tone, USPs)
+- 💬 Generates 5 branded greeting scripts
+- ❓ Auto-answers 4 foundational sales questions
+- 📄 Exports a clean, professional knowledge base PDF
+- 📦 Download as PDF, TXT/Markdown, or JSON (for chatbot integration)
+- 🛡️ No long-term storage: Data is processed in-memory only
+
+---
+
+## 🛠️ Tech Stack
 
 - **Frontend:** React + Tailwind CSS
 - **Backend:** Node.js (Puppeteer/Playwright for scraping)
-- **AI Layer:** Llama API (or similar)
+- **AI Layer:** Llama API (or similar LLM)
 - **PDF Generation:** jsPDF
+- **Clipboard:** Native JS / react-copy-to-clipboard
 - **Hosting:** Render
 
-## Getting Started
+---
 
-1. Clone the repo:
-   ```bash
-   git clone https://github.com/jasonsherman/sitetoagent.git
-   cd sitetoagent
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-4. Open [http://localhost:5173](http://localhost:5173) in your browser.
+## 🚀 Getting Started
 
-## License
+### 1. Clone the Repository
+```bash
+git clone https://github.com/jasonsherman/sitetoagent.git
+cd sitetoagent
+```
 
-This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
+### 2. Install Dependencies
+```bash
+npm install
+```
+
+### 3. Run the App
+```bash
+npm run dev
+```
+Then open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
+
+## 🔐 Privacy and Security
+
+- No user data or website content is stored long-term.
+- All processing is done in-memory for privacy.
+- No analytics or tracking by default.
+
+---
+
+## 📜 License
+
+This project is licensed under the [MIT License](LICENSE).
+
+---
+
+## 🙌 Contributions Welcome!
+
+Open issues, suggest features, or submit pull requests. Let's make AI-powered sales enablement accessible to everyone!
 
 *Made with ❤️ by [Jason Sherman](https://jasonsherman.org) and contributors.* 
