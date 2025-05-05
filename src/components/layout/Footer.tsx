@@ -12,29 +12,27 @@ const Footer = () => {
               complete AI sales agent training kit in seconds.
             </p>
             <div className="flex space-x-4">
-              <a href="#" className="text-gray-400 hover:text-white transition-colors">
+              {/* <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <Twitter size={20} />
               </a>
               <a href="#" className="text-gray-400 hover:text-white transition-colors">
                 <Github size={20} />
-              </a>
+              </a> */}
             </div>
           </div>
 
           <div>
             <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2">
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Home</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Features</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Pricing</a></li>
-              <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact</a></li>
+              <li><a href="https://vengoai.com" target="_blank" className="text-gray-400 hover:text-white transition-colors">Vengo AI Agents</a></li>
+              <li><a href="https://trendlyzer.com" target="_blank" className="text-gray-400 hover:text-white transition-colors">Trendlyzer</a></li>
             </ul>
           </div>
 
           <div>
             <h3 className="text-white font-bold text-lg mb-4">Contact</h3>
             <ul className="space-y-2 text-sm">
-              <li>info@vengoai.com</li>
+              <li><a href="mailto:info@vengoai.com" className="text-gray-400 hover:text-white transition-colors">info@vengoai.com</a></li>
               <li>Philadelphia, PA</li>
             </ul>
           </div>

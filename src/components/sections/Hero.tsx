@@ -12,7 +12,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Transform Your Website <br />Into an AI Sales Agent
+            Convert Your Website <br />Into an AI Sales Agent
           </motion.h1>
 
           <motion.p
@@ -33,7 +33,7 @@ const Hero = () => {
           >
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
               <Bot className="h-8 w-8 mb-2 mx-auto text-indigo-200" />
-              <h3 className="font-medium">AI Analysis</h3>
+              <h3 className="font-medium">AI Overview</h3>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
               <MessageSquare className="h-8 w-8 mb-2 mx-auto text-indigo-200" />
