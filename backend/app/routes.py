@@ -52,9 +52,9 @@ def analyze_url_endpoint():
             logger.warning(f"Invalid max_pages format: {max_pages}")
             return jsonify({'error': 'max_pages must be a valid integer'}), 400
             
-        result = analyze_url(url, max_pages)
+        result, status_code = analyze_url(url, max_pages)
         logger.info(f"Successfully analyzed URL: {url}")
-        return jsonify(result)
+        return jsonify(result), status_code
     except Exception as e:
         logger.error(f"Error analyzing URL: {str(e)}")
         return jsonify({'error': str(e)}), 500

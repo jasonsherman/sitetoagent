@@ -380,7 +380,7 @@ def analyze_url(url, max_pages=1):
         # Only process if we have content
         if not content:
             logger.warning(f"No content found for {url}")
-            return {"error": "No content found to analyze"}
+            return {"error": "No content found to analyze"}, 400
 
         # Generate safe filename
         safe_filename = sanitize_filename(url)
@@ -392,7 +392,9 @@ def analyze_url(url, max_pages=1):
 
         result = process_content(content)
         logger.info(f"Successfully completed URL analysis for {url}")
-        return result
+        return result, 200
     except Exception as e:
         logger.error(f"Error analyzing URL {url}: {str(e)}")
         raise 
+
+    
