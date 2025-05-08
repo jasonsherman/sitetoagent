@@ -1,0 +1,65 @@
+import { Website } from '../types/website';
+
+const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
+
+function transformResponse(data: any): Website {
+  // Use the input URL as the name if no URL is provided in the response
+  const url = data.url || '';
+  let name = '';
+  
+  try {
+    if (url) {
+      name = new URL(url).hostname.replace('www.', '');
+    } else {
+      name = 'Unknown Website';
+    }
+  } catch (error) {
+    name = 'Unknown Website';
+  }
+
+  return {
+    url,
+    name,
+    summary: {
+      businessOverview: data.businessOverview || '',
+      uniqueSellingPoints: data.uniqueSellingPoints || [],
+      servicesProducts: data.servicesProducts || [],
+      brandVoice: data.brandVoice || '',
+      valuePropositions: data.valuePropositions || [],
+    },
+    greetings: data.bestSalesLines || [],
+    salesQA: {
+      services: data.services || '',
+      differentiators: data.differentiators || '',
+      profitableItems: data.profitableItems || '',
+      closingLines: data.bestSalesLines || [], // Using bestSalesLines as closingLines
+    },
+  };
+}
+
+export async function analyzeWebsite(url: string): Promise<Website> {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/analyze-url`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ url }),
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(errorData.error || 'Failed to analyze website');
+    }
+
+    const data = await response.json();
+    // Add the input URL to the response data
+    data.url = url;
+    return transformResponse(data);
+  } catch (error) {
+    if (error instanceof Error) {
+      throw error.message;
+    }
+    throw 'An unexpected error occurred';
+  }
+} 

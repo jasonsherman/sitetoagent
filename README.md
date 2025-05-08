@@ -39,8 +39,8 @@ Most businesses struggle to quickly train AI sales agents on their unique value.
 ## 🛠️ Tech Stack
 
 - **Frontend:** React + Tailwind CSS
-- **Backend:** Node.js (Puppeteer/Playwright for scraping)
-- **AI Layer:** Llama API (or similar LLM)
+- **Backend:** Python Flask
+- **AI Layer:** OpenRouter API
 - **PDF Generation:** jsPDF
 - **Clipboard:** Native JS / react-copy-to-clipboard
 - **Hosting:** Render
@@ -55,12 +55,43 @@ git clone https://github.com/jasonsherman/sitetoagent.git
 cd sitetoagent
 ```
 
-### 2. Install Dependencies
+### 2. Backend Setup
+
+#### Create Environment File
+Create a `.env` file in the root directory and add your OpenRouter API key:
 ```bash
+OPENROUTER_API_KEY=your_api_key_here
+```
+
+#### Set Up Python Environment
+```bash
+cd backend
+python -m venv venv
+source venv/bin/activate  # On Windows, use: venv\Scripts\activate
+pip install -r requirements.txt
+```
+
+#### Run the Backend Server
+```bash
+python run.py
+```
+The backend server will start at `http://localhost:5000`. Keep this running in a separate terminal.
+
+### 3. Frontend Setup
+
+#### Update Environment Configuration
+Add the backend URL to your `.env` file:
+```bash
+VITE_BACKEND_URL=http://localhost:5000
+```
+
+#### Install Frontend Dependencies
+```bash
+cd ..  # Return to project root
 npm install
 ```
 
-### 3. Run the App
+#### Run the Frontend
 ```bash
 npm run dev
 ```

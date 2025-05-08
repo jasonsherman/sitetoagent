@@ -5,7 +5,7 @@ import Hero from './components/sections/Hero';
 import UrlForm from './components/features/UrlForm';
 import ResultsSection from './components/sections/ResultsSection';
 import { Website } from './types/website';
-import { mockAnalyzeWebsite } from './services/mockApi';
+import { analyzeWebsite } from './services/api';
 
 function App() {
   const [loading, setLoading] = useState(false);
@@ -16,8 +16,7 @@ function App() {
     try {
       setLoading(true);
       setError(null);
-      // In a real app, this would call your backend API
-      const data = await mockAnalyzeWebsite(url);
+      const data = await analyzeWebsite(url);
       setResults(data);
     } catch (err) {
       setError(typeof err === 'string' ? err : 'An error occurred while analyzing the website.');
