@@ -1,6 +1,8 @@
 import os
 import json
+import asyncio
 import requests
+from pyppeteer import launch
 from bs4 import BeautifulSoup
 from urllib.parse import urljoin, urlparse
 from openai import OpenAI
@@ -8,15 +10,76 @@ from app.prompts import get_analysis_prompt
 from fake_useragent import UserAgent
 import random
 import time
-from app.logger import setup_logger
+from app.logger import setup_logger, save_data_with_rotation
 import re
 from datetime import datetime
+import nest_asyncio
+from concurrent.futures import ProcessPoolExecutor
+import multiprocessing
 
 # Initialize logger
 logger = setup_logger('utils')
 
+# Apply nest_asyncio to allow nested event loops
+nest_asyncio.apply()
+
 # Constants
 MAX_CONTENT_LENGTH = 110000  # Maximum content length in characters
+PYPPETEER_EXECUTOR = ProcessPoolExecutor(max_workers=1)  # Single worker for Pyppeteer
+
+def _fetch_with_pyppeteer_process(url):
+    """
+    Run Pyppeteer in a separate process
+    """
+    async def _fetch_html():
+        browser = None
+        try:
+            browser = await launch(
+                headless=True,
+                args=[
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                    '--disable-dev-shm-usage',
+                    '--disable-accelerated-2d-canvas',
+                    '--disable-gpu'
+                ]
+            )
+            page = await browser.newPage()
+            await page.setViewport({'width': 1280, 'height': 800})
+            await page.goto(url, {'waitUntil': 'networkidle0', 'timeout': 30000})
+            content = await page.content()
+            return content
+        except Exception as e:
+            print(f"Error in Pyppeteer fetch: {str(e)}")  # Use print for process logging
+            return None
+        finally:
+            if browser:
+                try:
+                    await browser.close()
+                except:
+                    pass
+
+    try:
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        result = loop.run_until_complete(_fetch_html())
+        loop.close()
+        return result
+    except Exception as e:
+        print(f"Error in Pyppeteer process: {str(e)}")  # Use print for process logging
+        return None
+
+def run_pyppeteer(url):
+    """
+    Run Pyppeteer in a separate process
+    """
+    try:
+        # Run Pyppeteer in a separate process
+        future = PYPPETEER_EXECUTOR.submit(_fetch_with_pyppeteer_process, url)
+        return future.result(timeout=60)  # 60 second timeout
+    except Exception as e:
+        logger.error(f"Error running Pyppeteer: {str(e)}")
+        return None
 
 def sanitize_filename(url):
     """
@@ -99,11 +162,10 @@ def extract_structured_content(soup, url):
         description = meta_desc['content'] if meta_desc else ""
         
         # Extract main content in sequence
-        for element in soup.find_all(['h1', 'h2', 'h3', 'p', 'ul', 'ol', 'li']):
+        for element in soup.find_all(['h1', 'h2', 'h3', 'p', 'ul', 'ol', 'li', 'span']):
             if element.name in ['ul', 'ol']:
                 # Skip the list container itself, we'll get its items
                 continue
-                
             # Get text content
             text = element.get_text(strip=True)
             if text:
@@ -150,6 +212,26 @@ def get_links(soup, base_url):
         logger.error(f"Failed to extract links from {base_url}: {str(e)}")
         return set()
 
+def is_content_sufficient(soup):
+    """
+    Check if the scraped content is sufficient
+    Returns True if content seems valid, False if it might need JavaScript rendering
+    """
+    # Check for common indicators of insufficient content
+    if not soup.title:
+        return False
+        
+    # Check if main content elements exist
+    main_content = soup.find_all(['h1', 'h2', 'h3', 'p', 'ul', 'ol', 'li', 'span'])
+    if len(main_content) < 3:  # If we have very few content elements
+        return False
+        
+    # Check for common JavaScript-rendered content patterns
+    if soup.find('div', {'id': 'root'}) and not soup.find('div', {'id': 'root'}).get_text(strip=True):
+        return False
+        
+    return True
+
 def scrape_url(url, max_pages=1):
     """
     Scrape content from a given URL and its linked pages up to max_pages
@@ -177,10 +259,21 @@ def scrape_url(url, max_pages=1):
                 logger.debug(f"Waiting {delay:.2f} seconds before request")
                 time.sleep(delay)
                 
+                # First attempt with regular requests
                 response = requests.get(current_url, headers=headers, timeout=10)
                 response.raise_for_status()
-                
                 soup = BeautifulSoup(response.text, 'html.parser')
+                
+                # Check if content seems sufficient
+                if not is_content_sufficient(soup):
+                    logger.info(f"Content seems insufficient, trying Pyppeteer for {current_url}")
+                    # Fallback to Pyppeteer using the new run_pyppeteer function
+                    html = run_pyppeteer(current_url)
+                    if html:
+                        soup = BeautifulSoup(html, 'html.parser')
+                        logger.info("Successfully fetched content with Pyppeteer")
+                    else:
+                        logger.warning("Pyppeteer fallback failed, using original content")
                 
                 # Extract structured content
                 structured_data = extract_structured_content(soup, current_url)
@@ -256,17 +349,18 @@ def process_content(content):
         
         # Save the model's response for debugging
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        debug_dir = os.path.join('data', 'debug')
-        if not os.path.exists(debug_dir):
-            os.makedirs(debug_dir)
-            
-        debug_file = os.path.join(debug_dir, f"model_response_{timestamp}.json")
-        with open(debug_file, "w", encoding="utf-8") as f:
-            json.dump({
+        debug_filename = f"model_response_{timestamp}.json"
+        
+        # Save debug data with rotation policy
+        debug_file = save_data_with_rotation(
+            {
                 "prompt": prompt,
                 "raw_response": response_content,
                 "parsed_result": result
-            }, f, indent=2, ensure_ascii=False)
+            },
+            debug_filename,
+            debug=True
+        )
             
         logger.debug(f"Saved model response to {debug_file}")
         logger.info("Successfully processed content with OpenAI")
@@ -288,17 +382,13 @@ def analyze_url(url, max_pages=1):
             logger.warning(f"No content found for {url}")
             return {"error": "No content found to analyze"}
 
-        # Create data directory if it doesn't exist
-        if not os.path.exists('data'):
-            os.makedirs('data')
-
         # Generate safe filename
         safe_filename = sanitize_filename(url)
-        filepath = os.path.join('data', f"{safe_filename}-{max_pages}_pages.json")
+        filename = f"{safe_filename}-{max_pages}_pages.json"
         
-        logger.debug(f"Saving scraped data to {filepath}")
-        with open(filepath, "w", encoding="utf-8") as f:
-            json.dump(content, f, indent=2, ensure_ascii=False)
+        # Save data with rotation policy
+        filepath = save_data_with_rotation(content, filename)
+        logger.debug(f"Saved scraped data to {filepath}")
 
         result = process_content(content)
         logger.info(f"Successfully completed URL analysis for {url}")
