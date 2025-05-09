@@ -91,11 +91,66 @@ cd ..  # Return to project root
 npm install
 ```
 
-#### Run the Frontend
+#### Development Mode
 ```bash
 npm run dev
 ```
 Then open [http://localhost:5173](http://localhost:5173) in your browser.
+
+#### Production Build
+To build and run the frontend in production mode:
+
+1. Build the production bundle:
+```bash
+npm run build
+```
+
+2. Preview the production build locally:
+```bash
+npm run preview
+```
+
+3. For production deployment, serve the contents of the `dist` directory using a static file server like Nginx, Apache, or a cloud hosting service.
+
+
+#### Frontend Production Setup
+1. Build the frontend:
+```bash
+npm run build
+```
+
+2. Serve the production build using one of these methods:
+
+Using `serve` (simple option):
+```bash
+# Install serve globally
+npm install -g serve
+
+# Serve the production build
+serve -s dist -l 3000
+```
+
+Using `nginx` (recommended for production):
+```nginx
+server {
+    listen 80;
+    server_name your-domain.com;
+
+    location / {
+        root /path/to/your/dist;
+        try_files $uri $uri/ /index.html;
+    }
+
+    location /api {
+        proxy_pass http://localhost:5000;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_cache_bypass $http_upgrade;
+    }
+}
+```
 
 ---
 

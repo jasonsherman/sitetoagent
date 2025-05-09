@@ -27,12 +27,12 @@ function transformResponse(data: any): Website {
       brandVoice: data.brandVoice || '',
       valuePropositions: data.valuePropositions || [],
     },
-    greetings: data.bestSalesLines || [],
+    greetings: data.greetings || [],
     salesQA: {
-      services: data.services || '',
-      differentiators: data.differentiators || '',
-      profitableItems: data.profitableItems || '',
-      closingLines: data.bestSalesLines || [], // Using bestSalesLines as closingLines
+      services: data.providedServicesProducts || '',
+      differentiators: data.competitiveDifference || '',
+      profitableItems: data.mostProfitableLineItems || '',
+      closingLines: data.bestSalesLines || [],
     },
   };
 }
