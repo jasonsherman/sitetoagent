@@ -1,4 +1,5 @@
 import { Website } from '../types/website';
+import { generatePDF as generatePDFDocument } from './pdfGenerator';
 
 // This simulates API calls to a backend service
 export const mockAnalyzeWebsite = async (url: string): Promise<Website> => {
@@ -66,11 +67,5 @@ export const mockAnalyzeWebsite = async (url: string): Promise<Website> => {
 };
 
 export const generatePDF = async (website: Website): Promise<string> => {
-  // In a real app, this would generate a real PDF
-  return new Promise((resolve) => {
-    setTimeout(() => {
-      // Mock PDF generation - return a fake blob URL
-      resolve("blob:mock-pdf-url");
-    }, 1000);
-  });
+  return generatePDFDocument(website);
 };
