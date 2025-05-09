@@ -5,11 +5,7 @@ const Header = () => {
     <header className="bg-white shadow-sm sticky top-0 z-10">
       <div className="container mx-auto px-4 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
-          <Brain className="h-8 w-8 text-indigo-600" />
-          <div>
-            <h1 className="text-xl font-bold text-gray-900">SiteToAgent</h1>
-            <p className="text-xs text-gray-500">AI Sales Agent Generator</p>
-          </div>
+          <img src="assets/img/site-to-agent-logo.png" alt="SiteToAgent Logo" className="h-12 w-auto" />
         </div>
         <nav className="flex items-center space-x-1 sm:space-x-3">
           <a
