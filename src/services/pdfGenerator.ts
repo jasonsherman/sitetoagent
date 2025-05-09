@@ -48,7 +48,7 @@ export const generatePDF = async (website: Website): Promise<string> => {
   };
 
   // Title
-  addText(`${website.name} - Sales Knowledge Base`, 20, true);
+  addText(`${website.name} - Knowledge Base`, 20, true);
   y += 10;
 
   // 1. Business Overview
