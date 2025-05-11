@@ -45,10 +45,15 @@ function App() {
           setProgress(status.progress);
           setProgressMsg(status.message);
           setProgressStep(status.step);
-          if (status.progress === 100 && status.result) {
+          if (status.progress === 100) {
             clearPolling();
             setAnalyzing(false);
-            setResults(transformResponse(status.result));
+            if (status.result) {
+              setResults(transformResponse(status.result, url));
+            } else {
+              // If progress is 100 but no result, treat the message as an error
+              setError(status.message || 'Analysis completed but no results were returned.');
+            }
             setLoading(false);
             localStorage.removeItem('analyze_task_id');
           }
@@ -79,10 +84,15 @@ function App() {
           setProgress(status.progress);
           setProgressMsg(status.message);
           setProgressStep(status.step);
-          if (status.progress === 100 && status.result) {
+          if (status.progress === 100) {
             clearPolling();
             setAnalyzing(false);
-            setResults(transformResponse(status.result));
+            if (status.result) {
+              setResults(transformResponse(status.result, currentUrl));
+            } else {
+              // If progress is 100 but no result, treat the message as an error
+              setError(status.message || 'Analysis completed but no results were returned.');
+            }
             setLoading(false);
             localStorage.removeItem('analyze_task_id');
           }
