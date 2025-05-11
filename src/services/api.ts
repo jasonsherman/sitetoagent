@@ -11,10 +11,10 @@ export function transformResponse(data: any): Website {
     if (url) {
       name = new URL(url).hostname.replace('www.', '');
     } else {
-      name = 'Unknown Website';
+      name = 'Website';
     }
   } catch (error) {
-    name = 'Unknown Website';
+    name = 'Website';
   }
 
   return {
