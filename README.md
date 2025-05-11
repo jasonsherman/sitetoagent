@@ -1,6 +1,6 @@
 # 🤖 SiteToAgent – AI-Powered Sales Agent Generator & Knowledge Base Builder
 
-Paste a website URL → Scrape & Summarize → Generate Sales Scripts & Q&A → Download a Branded PDF.
+Paste a website URL → Scrape & Summarize → Generate Sales Scripts & Q&A → Download a Branded PDF. Try it live at [sitetoagent.com](https://sitetoagent.com)!
 
 ---
 
