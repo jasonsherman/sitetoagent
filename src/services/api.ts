@@ -34,6 +34,7 @@ export function transformResponse(data: any): Website {
       profitableItems: data.mostProfitableLineItems || '',
       closingLines: data.bestSalesLines || [],
     },
+    faqs: data.faqs || [],
   };
 }
 

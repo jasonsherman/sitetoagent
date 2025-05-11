@@ -83,13 +83,22 @@ export const generatePDF = async (website: Website): Promise<string> => {
   y += 10;
 
   // 6. Sales Q&A
-//   addText('6. Common Sales Questions & Strategic Answers', 16, true);
-//   y += 10;
+  addText('6. Common Sales Questions & Strategic Answers', 16, true);
+  y += 10;
+  
+  // Add FAQs
+  if (website.faqs && website.faqs.length > 0) {
+    website.faqs.forEach((faq, index) => {
+      addText(`Q${index + 1}: ${faq.question}`, 12, true);
+      addText(`A: ${faq.answer}`);
+      y += 5;
+    });
+  }
+  y += 10;
 
   // 7. Value Propositions
-  addText('6. Value Propositions & Customer Benefits', 16, true);
+  addText('7. Value Propositions & Customer Benefits', 16, true);
   addListItems(website.summary.valuePropositions);
-  y += 10;
 
   // Closing Lines
   addText('Effective Closing Lines:', 16, true);

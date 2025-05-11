@@ -58,7 +58,8 @@ export const mockAnalyzeWebsite = async (url: string): Promise<Website> => {
             "The challenges you're describing are exactly what our platform was designed to solve. I'd like to arrange a personalized demo to show you specifically how it would work for your business.",
             "Let's start with a small pilot project to demonstrate the value. Once you see the results, we can discuss scaling the solution across your organization."
           ]
-        }
+        },
+        faqs: []
       };
       
       resolve(mockResponse);

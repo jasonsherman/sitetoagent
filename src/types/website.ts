@@ -1,3 +1,8 @@
+export interface FAQ {
+  question: string;
+  answer: string;
+}
+
 export interface Website {
   url: string;
   name: string;
@@ -15,4 +20,5 @@ export interface Website {
     profitableItems: string;
     closingLines: string[];
   };
+  faqs: FAQ[];
 }
