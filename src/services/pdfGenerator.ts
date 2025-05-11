@@ -54,16 +54,22 @@ export const generatePDF = async (website: Website): Promise<string> => {
   // 1. Business Overview
   addText('1. Business Overview & Company Information', 16, true);
   addText(website.summary.businessOverview);
+  addText('Services Overview:', 14, true);
+  addText(website.salesQA.services);
   y += 10;
 
   // 2. Services & Products
   addText('2. Services & Products Catalog', 16, true);
   addListItems(website.summary.servicesProducts);
+  addText('Most Profitable Items:', 14, true);
+  addText(website.salesQA.profitableItems);
   y += 10;
 
   // 3. Unique Selling Points
   addText('3. Unique Selling Points & Competitive Advantages', 16, true);
   addListItems(website.summary.uniqueSellingPoints);
+  addText('Competitive Differentiators:', 14, true);
+  addText(website.salesQA.differentiators);
   y += 10;
 
   // 4. Brand Voice
@@ -77,17 +83,11 @@ export const generatePDF = async (website: Website): Promise<string> => {
   y += 10;
 
   // 6. Sales Q&A
-  addText('6. Common Sales Questions & Strategic Answers', 16, true);
-  addText('Services Overview:', 14, true);
-  addText(website.salesQA.services);
-  addText('Competitive Differentiators:', 14, true);
-  addText(website.salesQA.differentiators);
-  addText('Most Profitable Items:', 14, true);
-  addText(website.salesQA.profitableItems);
-  y += 10;
+//   addText('6. Common Sales Questions & Strategic Answers', 16, true);
+//   y += 10;
 
   // 7. Value Propositions
-  addText('7. Value Propositions & Customer Benefits', 16, true);
+  addText('6. Value Propositions & Customer Benefits', 16, true);
   addListItems(website.summary.valuePropositions);
   y += 10;
 
