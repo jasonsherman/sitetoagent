@@ -2,9 +2,9 @@ import { Website } from '../types/website';
 
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
-export function transformResponse(data: any): Website {
+export function transformResponse(data: any, url: any): Website {
   // Use the input URL as the name if no URL is provided in the response
-  const url = data.url || '';
+
   let name = '';
   
   try {
@@ -55,8 +55,7 @@ export async function analyzeWebsite(url: string): Promise<Website> {
 
     const data = await response.json();
     // Add the input URL to the response data
-    data.url = url;
-    return transformResponse(data);
+    return transformResponse(data, url);
   } catch (error) {
     if (error instanceof Error) {
       throw error.message;
