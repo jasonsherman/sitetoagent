@@ -20,7 +20,7 @@ const VideoModal = ({ open, onClose }: { open: boolean; onClose: () => void }) =
                     <iframe
                         width="100%"
                         height="400"
-                        src="https://www.youtube.com/embed/i0hGwZluDW4"
+                        src="https://www.youtube.com/embed/iaIJpERsQTw?si=QbFvdTDRaFM705ly"
                         title="Demo Video"
                         frameBorder="0"
                         allow="autoplay; encrypted-media"
