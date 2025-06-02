@@ -1,0 +1,140 @@
+{
+  "hero": {
+    "title": "Convert Your Website Into an AI Sales Agent",
+    "subtitle": "Generate a complete AI sales agent training kit with just one click. Scrape your website, build a knowledge base, create greetings, and answer training questions with your own data.",
+    "features": {
+      "aiOverview": "AI Overview",
+      "businessAnswers": "Business Answers",
+      "knowledgeBase": "Knowledge Base",
+      "salesQA": "Sales Q&A"
+    }
+  },
+  "form": {
+    "urlPlaceholder": "https://vengoai.com",
+    "analyzeButton": "Analyze",
+    "processingButton": "Processing",
+    "japaneseToggle": "Japanese Response",
+    "urlError": {
+      "empty": "Please enter a URL",
+      "invalid": "Please enter a valid URL"
+    },
+    "description": "We'll analyze the site and generate a complete sales agent training kit based on the content."
+  },
+  "analyzing": {
+    "title": "Analyzing {{url}}",
+    "subtitle": "Please wait while we process your website",
+    "steps": {
+      "scraping": "Scraping website content",
+      "business_overview": "Creating business overview",
+      "services_products": "Analyzing services & products",
+      "unique_selling_points": "Identifying unique selling points",
+      "brand_voice": "Determining brand voice",
+      "sales_qa": "Generating sales Q&A"
+    }
+  },
+  "results": {
+    "title": "Results for {{name}}",
+    "subtitle": "We've analyzed your website and generated the following sales agent training materials.",
+    "tabs": {
+      "summary": "Business Summary",
+      "greetings": "Greetings",
+      "sales": "Sales Q&A",
+      "pdf": "Knowledge Base"
+    }
+  },
+  "salesQA": {
+    "title": "Sales Q&A",
+    "copyAll": "Copy All Answers",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "copyClosingLines": "Copy Closing Lines",
+    "closingLines": {
+      "title": "What are your 5 best sales lines to close a deal?"
+    },
+    "questions": {
+      "services": "What services or products does your business provide?",
+      "differentiators": "How are you different from your competitors?",
+      "profitable": "What are your most profitable line items?",
+      "closingLines": "Best Sales Lines"
+    }
+  },
+  "knowledgeBase": {
+    "title": "Knowledge Base PDF",
+    "description": "Generate a comprehensive PDF containing all the insights and sales materials extracted from the website.",
+    "generate": "Generate PDF",
+    "generating": "Generating PDF...",
+    "download": "Download PDF",
+    "clickToDownload": "Click here to download your PDF",
+    "preview": {
+      "title": "PDF Contents Preview:",
+      "sections": [
+        "Business Overview & Company Information",
+        "Services & Products Catalog",
+        "Unique Selling Points & Competitive Advantages",
+        "Brand Voice Guidelines & Communication Style",
+        "Sales Scripts & Greeting Templates",
+        "Common Sales Questions & Strategic Answers",
+        "Value Propositions & Customer Benefits"
+      ]
+    }
+  },
+  "errors": {
+    "title": "Error",
+    "analysisFailed": "Failed to start analysis.",
+    "pollingError": "Error polling analysis status.",
+    "noResults": "Analysis completed but no results were returned."
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+  "businessSummary": {
+    "overview": {
+      "title": "Business Overview"
+    },
+    "uniqueSellingPoints": {
+      "title": "Unique Selling Points"
+    },
+    "servicesProducts": {
+      "title": "Services/Products"
+    },
+    "brandVoice": {
+      "title": "Brand Voice"
+    },
+    "valuePropositions": {
+      "title": "Value Propositions"
+    },
+    "copyToClipboard": "Copy to clipboard"
+  },
+  "greetings": {
+    "title": "Branded Greeting Scripts",
+    "copyAll": "Copy All Greetings",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "greetingNumber": "Greeting {{number}}"
+  },
+  "header": {
+    "logoAlt": "SiteToAgent Logo",
+    "watchDemo": "Watch Demo",
+    "vengoAI": "Vengo AI Agents",
+    "switchToEnglish": "English",
+    "switchToJapanese": "日本語"
+  },
+  "pdf": {
+    "title": "Knowledge Base",
+    "sections": {
+      "businessOverview": "Business Overview & Company Information",
+      "servicesOverview": "Services Overview",
+      "servicesProducts": "Services & Products Catalog",
+      "profitableItems": "Most Profitable Items",
+      "uniqueSellingPoints": "Unique Selling Points & Competitive Advantages",
+      "competitiveDifferentiators": "Competitive Differentiators",
+      "brandVoice": "Brand Voice Guidelines & Communication Style",
+      "salesScripts": "Sales Scripts & Greeting Templates",
+      "salesQA": "Common Sales Questions & Strategic Answers",
+      "question": "Q",
+      "answer": "A",
+      "valuePropositions": "Value Propositions & Customer Benefits",
+      "closingLines": "Effective Closing Lines"
+    }
+  }
+} 

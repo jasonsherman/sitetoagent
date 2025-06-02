@@ -1,14 +1,16 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { FileDown, Download, Loader2 } from 'lucide-react';
+import { FileDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Website } from '../../types/website';
-import { generatePDF } from '../../services/mockApi';
+import { generatePDF } from '../../services/pdfGenerator';
 
 interface KnowledgeBaseProps {
   website: Website;
 }
 
 const KnowledgeBase = ({ website }: KnowledgeBaseProps) => {
+  const { t } = useTranslation();
   const [isGenerating, setIsGenerating] = useState(false);
   const [pdfUrl, setPdfUrl] = useState<string | null>(null);
 
@@ -24,6 +26,8 @@ const KnowledgeBase = ({ website }: KnowledgeBaseProps) => {
     }
   };
 
+  const sections = t('knowledgeBase.preview.sections', { returnObjects: true }) as string[];
+
   return (
     <motion.div
       initial={{ opacity: 0 }}
@@ -34,81 +38,63 @@ const KnowledgeBase = ({ website }: KnowledgeBaseProps) => {
         <div className="p-6 text-center">
           <div className="mb-6">
             <FileDown className="h-16 w-16 mx-auto text-indigo-600 mb-4" />
-            <h3 className="text-xl font-semibold text-gray-800 mb-2">Knowledge Base PDF</h3>
+            <h3 className="text-xl font-semibold text-gray-800 mb-2">{t('knowledgeBase.title')}</h3>
             <p className="text-gray-600 max-w-md mx-auto">
-              Generate a comprehensive PDF containing all the insights and sales materials extracted from the website.
+              {t('knowledgeBase.description')}
             </p>
           </div>
 
-          {pdfUrl ? (
-            <div className="space-y-4">
-              <div className="p-4 bg-green-50 text-green-700 rounded-md">
-                <p className="font-medium">Your PDF is ready!</p>
-                <p className="text-sm">Click the button below to download it.</p>
-              </div>
-              
+          <button
+            onClick={handleGeneratePDF}
+            disabled={isGenerating || !!pdfUrl}
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {isGenerating ? (
+              <>
+                <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                  <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                  <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                {t('knowledgeBase.generating')}
+              </>
+            ) : pdfUrl ? (
+              <>
+                <FileDown className="h-4 w-4 mr-2" />
+                {t('knowledgeBase.download')}
+              </>
+            ) : (
+              <>
+                <FileDown className="h-4 w-4 mr-2" />
+                {t('knowledgeBase.generate')}
+              </>
+            )}
+          </button>
+
+          {pdfUrl && (
+            <div className="mt-4">
               <a
                 href={pdfUrl}
-                download={`${website.name}-sales-agent-kb.pdf`}
-                className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors"
+                download
+                className="text-sm text-indigo-600 hover:text-indigo-700"
               >
-                <Download className="h-5 w-5 mr-2" />
-                Download PDF
+                {t('knowledgeBase.clickToDownload')}
               </a>
             </div>
-          ) : (
-            <button
-              onClick={handleGeneratePDF}
-              disabled={isGenerating}
-              className="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {isGenerating ? (
-                <>
-                  <Loader2 className="animate-spin h-5 w-5 mr-2" />
-                  Generating PDF...
-                </>
-              ) : (
-                <>
-                  <FileDown className="h-5 w-5 mr-2" />
-                  Generate Knowledge Base PDF
-                </>
-              )}
-            </button>
           )}
         </div>
 
         <div className="p-6 bg-gray-50 border-t border-gray-200">
-          <h4 className="font-medium text-gray-700 mb-3">PDF Contents Preview:</h4>
+          <h4 className="font-medium text-gray-700 mb-3">{t('knowledgeBase.preview.title')}</h4>
           
           <div className="space-y-3 text-sm text-gray-600">
-            <div className="flex items-start">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">1</span>
-              <span>Business Overview & Company Information</span>
-            </div>
-            <div className="flex items-start">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">2</span>
-              <span>Services & Products Catalog</span>
-            </div>
-            <div className="flex items-start">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">3</span>
-              <span>Unique Selling Points & Competitive Advantages</span>
-            </div>
-            <div className="flex items-start">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">4</span>
-              <span>Brand Voice Guidelines & Communication Style</span>
-            </div>
-            <div className="flex items-start">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">5</span>
-              <span>Sales Scripts & Greeting Templates</span>
-            </div>
-            <div className="flex items-start">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">6</span>
-              <span>Common Sales Questions & Strategic Answers</span>
-            </div>
-            <div className="flex items-start">
-              <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">7</span>
-              <span>Value Propositions & Customer Benefits</span>
-            </div>
+            {sections.map((section: string, index: number) => (
+              <div key={index} className="flex items-start">
+                <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2">
+                  {index + 1}
+                </span>
+                <span>{section}</span>
+              </div>
+            ))}
           </div>
         </div>
       </div>

@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 import Hero from './components/sections/Hero';
@@ -7,8 +8,12 @@ import ResultsSection from './components/sections/ResultsSection';
 import { Website } from './types/website';
 import { startAnalysis, getAnalysisStatus, transformResponse } from './services/api';
 import AnalyzingModal from './components/features/AnalyzingModal';
+import { LanguageProvider } from './contexts/LanguageContext';
 
-function App() {
+type ResponseLanguage = 'en' | 'ja';
+
+function AppContent() {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false);
   const [results, setResults] = useState<Website | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -26,17 +31,17 @@ function App() {
     }
   };
 
-  const handleSubmit = async (url: string) => {
+  const handleSubmit = async (url: string, responseLanguage?: ResponseLanguage) => {
     setResults(null);
     setError(null);
     setCurrentUrl(url);
     setAnalyzing(true);
     setProgress(0);
-    setProgressMsg('Starting analysis...');
+    setProgressMsg(t('analyzing.steps.scraping'));
     setProgressStep('');
     setLoading(true);
     try {
-      const taskId = await startAnalysis(url);
+      const taskId = await startAnalysis(url, responseLanguage);
       localStorage.setItem('analyze_task_id', taskId);
       // Start polling
       pollRef.current = window.setInterval(async () => {
@@ -51,14 +56,13 @@ function App() {
             if (status.result) {
               setResults(transformResponse(status.result, url));
             } else {
-              // If progress is 100 but no result, treat the message as an error
-              setError(status.message || 'Analysis completed but no results were returned.');
+              setError(t('errors.noResults'));
             }
             setLoading(false);
             localStorage.removeItem('analyze_task_id');
           }
         } catch (err) {
-          setError('Error polling analysis status.');
+          setError(t('errors.pollingError'));
           setAnalyzing(false);
           setLoading(false);
           clearPolling();
@@ -66,7 +70,7 @@ function App() {
         }
       }, 2000);
     } catch (err) {
-      setError('Failed to start analysis.');
+      setError(t('errors.analysisFailed'));
       setAnalyzing(false);
       setLoading(false);
     }
@@ -90,14 +94,13 @@ function App() {
             if (status.result) {
               setResults(transformResponse(status.result, currentUrl));
             } else {
-              // If progress is 100 but no result, treat the message as an error
-              setError(status.message || 'Analysis completed but no results were returned.');
+              setError(t('errors.noResults'));
             }
             setLoading(false);
             localStorage.removeItem('analyze_task_id');
           }
         } catch (err) {
-          setError('Error polling analysis status.');
+          setError(t('errors.pollingError'));
           setAnalyzing(false);
           setLoading(false);
           clearPolling();
@@ -128,7 +131,7 @@ function App() {
           )}
           {error && (
             <div className="mt-6 p-4 bg-red-50 text-red-700 rounded-lg border border-red-200">
-              <p className="font-medium">Error</p>
+              <p className="font-medium">{t('errors.title')}</p>
               <p>{error}</p>
             </div>
           )}
@@ -139,6 +142,14 @@ function App() {
       </main>
       <Footer />
     </div>
+  );
+}
+
+function App() {
+  return (
+    <LanguageProvider>
+      <AppContent />
+    </LanguageProvider>
   );
 }
 

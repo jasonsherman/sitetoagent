@@ -1,0 +1,140 @@
+{
+  "hero": {
+    "title": "ウェブサイトをAIセールスエージェントに変換",
+    "subtitle": "ワンクリックで完全なAIセールスエージェントトレーニングキットを生成。ウェブサイトをスクレイピングし、ナレッジベースを構築し、挨拶を作成し、独自のデータでトレーニング質問に回答します。",
+    "features": {
+      "aiOverview": "AI概要",
+      "businessAnswers": "ビジネス回答",
+      "knowledgeBase": "ナレッジベース",
+      "salesQA": "セールスQ&A"
+    }
+  },
+  "form": {
+    "urlPlaceholder": "https://vengoai.com",
+    "analyzeButton": "分析開始",
+    "processingButton": "処理中",
+    "japaneseToggle": "日本語レスポンス",
+    "urlError": {
+      "empty": "URLを入力してください",
+      "invalid": "有効なURLを入力してください"
+    },
+    "description": "サイトを分析し、コンテンツに基づいて完全なセールスエージェントトレーニングキットを生成します。"
+  },
+  "analyzing": {
+    "title": "{{url}}を分析中",
+    "subtitle": "ウェブサイトの処理中です。お待ちください。",
+    "steps": {
+      "scraping": "ウェブサイトコンテンツのスクレイピング",
+      "business_overview": "ビジネス概要の作成",
+      "services_products": "サービスと製品の分析",
+      "unique_selling_points": "独自の売りポイントの特定",
+      "brand_voice": "ブランドボイスの決定",
+      "sales_qa": "セールスQ&Aの生成"
+    }
+  },
+  "results": {
+    "title": "{{name}}の分析結果",
+    "subtitle": "ウェブサイトを分析し、以下のセールスエージェントトレーニング資料を生成しました。",
+    "tabs": {
+      "summary": "ビジネス概要",
+      "greetings": "挨拶",
+      "sales": "セールスQ&A",
+      "pdf": "ナレッジベース"
+    }
+  },
+  "salesQA": {
+    "title": "セールスQ&A",
+    "copyAll": "すべての回答をコピー",
+    "copy": "コピー",
+    "copied": "コピーしました！",
+    "copyClosingLines": "クロージングラインをコピー",
+    "closingLines": {
+      "title": "取引を成立させるための5つのベストセールスラインは何ですか？"
+    },
+    "questions": {
+      "services": "あなたのビジネスはどのようなサービスや製品を提供していますか？",
+      "differentiators": "競合他社とどのように差別化していますか？",
+      "profitable": "最も収益性の高い商品は何ですか？",
+      "closingLines": "ベストセールスライン"
+    }
+  },
+  "knowledgeBase": {
+    "title": "ナレッジベースPDF",
+    "description": "ウェブサイトから抽出したすべての洞察とセールス資料を含む包括的なPDFを生成します。",
+    "generate": "PDFを生成",
+    "generating": "PDFを生成中...",
+    "download": "PDFをダウンロード",
+    "clickToDownload": "PDFをダウンロードするにはここをクリック",
+    "preview": {
+      "title": "PDF内容プレビュー：",
+      "sections": [
+        "ビジネス概要と会社情報",
+        "サービスと製品カタログ",
+        "独自の売りポイントと競争優位性",
+        "ブランドボイスガイドラインとコミュニケーションスタイル",
+        "セールススクリプトと挨拶テンプレート",
+        "一般的なセールス質問と戦略的回答",
+        "価値提案と顧客メリット"
+      ]
+    }
+  },
+  "errors": {
+    "title": "エラー",
+    "analysisFailed": "分析の開始に失敗しました。",
+    "pollingError": "分析ステータスの取得中にエラーが発生しました。",
+    "noResults": "分析は完了しましたが、結果が返されませんでした。"
+  },
+  "footer": {
+    "rights": "All rights reserved."
+  },
+  "businessSummary": {
+    "overview": {
+      "title": "ビジネス概要"
+    },
+    "uniqueSellingPoints": {
+      "title": "独自の売りポイント"
+    },
+    "servicesProducts": {
+      "title": "サービス/製品"
+    },
+    "brandVoice": {
+      "title": "ブランドボイス"
+    },
+    "valuePropositions": {
+      "title": "価値提案"
+    },
+    "copyToClipboard": "クリップボードにコピー"
+  },
+  "greetings": {
+    "title": "ブランド挨拶スクリプト",
+    "copyAll": "すべての挨拶をコピー",
+    "copy": "コピー",
+    "copied": "コピーしました！",
+    "greetingNumber": "挨拶{{number}}"
+  },
+  "header": {
+    "logoAlt": "SiteToAgentロゴ",
+    "watchDemo": "デモを見る",
+    "vengoAI": "Vengo AIエージェント",
+    "switchToEnglish": "English",
+    "switchToJapanese": "日本語"
+  },
+  "pdf": {
+    "title": "ナレッジベース",
+    "sections": {
+      "businessOverview": "ビジネス概要と会社情報",
+      "servicesOverview": "サービス概要",
+      "servicesProducts": "サービスと製品カタログ",
+      "profitableItems": "最も収益性の高い商品",
+      "uniqueSellingPoints": "独自の売りポイントと競争優位性",
+      "competitiveDifferentiators": "競合差別化要因",
+      "brandVoice": "ブランドボイスガイドラインとコミュニケーションスタイル",
+      "salesScripts": "セールススクリプトと挨拶テンプレート",
+      "salesQA": "一般的なセールス質問と戦略的回答",
+      "question": "質問",
+      "answer": "回答",
+      "valuePropositions": "価値提案と顧客メリット",
+      "closingLines": "効果的なクロージングライン"
+    }
+  }
+} 
