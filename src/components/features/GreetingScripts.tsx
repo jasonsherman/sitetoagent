@@ -1,12 +1,14 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { CheckCircle, Copy } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 interface GreetingScriptsProps {
   greetings: string[];
 }
 
 const GreetingScripts = ({ greetings }: GreetingScriptsProps) => {
+  const { t } = useTranslation();
   const [copiedIndex, setCopiedIndex] = useState<number | null>(null);
 
   const copyToClipboard = (text: string, index: number) => {
@@ -27,13 +29,13 @@ const GreetingScripts = ({ greetings }: GreetingScriptsProps) => {
       transition={{ duration: 0.5 }}
     >
       <div className="flex justify-between items-center mb-6">
-        <h3 className="text-xl font-semibold text-gray-800">Branded Greeting Scripts</h3>
+        <h3 className="text-xl font-semibold text-gray-800">{t('greetings.title')}</h3>
         <button
           onClick={copyAllGreetings}
           className="inline-flex items-center px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-medium rounded-md transition-colors"
         >
           <Copy className="h-4 w-4 mr-1.5" />
-          Copy All Greetings
+          {t('greetings.copyAll')}
         </button>
       </div>
 
@@ -47,7 +49,7 @@ const GreetingScripts = ({ greetings }: GreetingScriptsProps) => {
             transition={{ duration: 0.3, delay: index * 0.1 }}
           >
             <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-              <h4 className="font-medium text-gray-700">Greeting {index + 1}</h4>
+              <h4 className="font-medium text-gray-700">{t('greetings.greetingNumber', { number: index + 1 })}</h4>
               <button
                 onClick={() => copyToClipboard(greeting, index)}
                 className="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600 transition-colors"
@@ -55,12 +57,12 @@ const GreetingScripts = ({ greetings }: GreetingScriptsProps) => {
                 {copiedIndex === index ? (
                   <>
                     <CheckCircle className="h-4 w-4 mr-1 text-green-500" />
-                    <span className="text-green-500">Copied!</span>
+                    <span className="text-green-500">{t('greetings.copied')}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="h-4 w-4 mr-1" />
-                    Copy
+                    {t('greetings.copy')}
                   </>
                 )}
               </button>

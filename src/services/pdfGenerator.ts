@@ -1,110 +1,97 @@
 import { jsPDF } from 'jspdf';
+import i18next from 'i18next';
 import { Website } from '../types/website';
 
-export const generatePDF = async (website: Website): Promise<string> => {
-  const doc = new jsPDF();
-  const pageWidth = doc.internal.pageSize.getWidth();
-  const pageHeight = doc.internal.pageSize.getHeight();
-  const margin = 20;
-  let y = margin;
-  const lineHeight = 7;
+import notoSansJPRegular from '../assets/fonts/notoSansJPRegular';
+import notoSansJPBold from '../assets/fonts/notoSansJPBold';
 
-  // Helper function to check if we need a new page
+export const generatePDF = async (website: Website): Promise<string> => {
+  const doc = new jsPDF({ unit: 'pt', format: 'a4' });
+  
+  /* ────────────── 1.  Register Unicode font ────────────── */
+  doc.addFileToVFS('NotoSansJP-Regular.ttf', notoSansJPRegular);
+  doc.addFont      ('NotoSansJP-Regular.ttf', 'NotoSansJP', 'normal');
+  
+  doc.addFileToVFS('NotoSansJP-Bold.ttf',    notoSansJPBold);
+  doc.addFont      ('NotoSansJP-Bold.ttf',    'NotoSansJP', 'bold');
+  doc.setFont('NotoSansJP', 'normal');
+  
+  console.log("font list :::: ", doc.getFontList());
+  /* ────────────── 2.  Helpers ────────────── */
+  const pageWidth  = doc.internal.pageSize.getWidth();
+  const pageHeight = doc.internal.pageSize.getHeight();
+  const margin     = 20;
+  const lineHeight = 14;             // a bit taller for CJK
+  let   y          = margin;
+
+  const baseFont = i18next.language === 'ja' ? 'NotoSansJP' : 'helvetica';
+
   const checkNewPage = (height: number) => {
     if (y + height > pageHeight - margin) {
       doc.addPage();
       y = margin;
-      return true;
     }
-    return false;
   };
 
-  // Helper function to add text with word wrap
-  const addText = (text: string, fontSize: number = 12, isBold: boolean = false) => {
+  const addText = (
+    text: string,
+    fontSize = 12,
+    bold = false,
+  ) => {
+    doc.setFont(baseFont, bold ? 'bold' : 'normal');
     doc.setFontSize(fontSize);
-    doc.setFont('helvetica', isBold ? 'bold' : 'normal');
-    
-    const splitText = doc.splitTextToSize(text, pageWidth - (2 * margin));
-    const textHeight = splitText.length * lineHeight;
-    
-    checkNewPage(textHeight);
-    doc.text(splitText, margin, y);
-    y += textHeight + 5;
+
+    const split = doc.splitTextToSize(text, pageWidth - 2 * margin);
+    const blockHeight = split.length * lineHeight;
+
+    checkNewPage(blockHeight);
+    doc.text(split, margin, y);
+    y += blockHeight + 4;
   };
 
-  // Helper function to add list items
-  const addListItems = (items: string[]) => {
-    items.forEach((item, index) => {
-      const text = `${index + 1}. ${item}`;
-      const splitText = doc.splitTextToSize(text, pageWidth - (2 * margin));
-      const textHeight = splitText.length * lineHeight;
-      
-      checkNewPage(textHeight);
-      doc.setFontSize(12);
-      doc.setFont('helvetica', 'normal');
-      doc.text(splitText, margin, y);
-      y += textHeight + 5;
-    });
-  };
+  const addList = (items: string[]) =>
+    items.forEach((item, idx) =>
+      addText(`${idx + 1}. ${item}`)
+    );
 
-  // Title
-  addText(`${website.name} - Knowledge Base`, 20, true);
-  y += 10;
+  const t = i18next.t;
 
-  // 1. Business Overview
-  addText('1. Business Overview & Company Information', 16, true);
+  /* ────────────── 3.  Content ────────────── */
+  addText(`${website.name} - ${t('pdf.title')}`, 20, true);      y += 6;
+
+  addText(`1. ${t('pdf.sections.businessOverview')}`, 16, true);
   addText(website.summary.businessOverview);
-  addText('Services Overview:', 14, true);
-  addText(website.salesQA.services);
-  y += 10;
+  addText(`${t('pdf.sections.servicesOverview')}:`, 14, true);
+  addText(website.salesQA.services);                            y += 10;
 
-  // 2. Services & Products
-  addText('2. Services & Products Catalog', 16, true);
-  addListItems(website.summary.servicesProducts);
-  addText('Most Profitable Items:', 14, true);
-  addText(website.salesQA.profitableItems);
-  y += 10;
+  addText(`2. ${t('pdf.sections.servicesProducts')}`, 16, true);
+  addList(website.summary.servicesProducts);
+  addText(`${t('pdf.sections.profitableItems')}:`, 14, true);
+  addText(website.salesQA.profitableItems);                     y += 10;
 
-  // 3. Unique Selling Points
-  addText('3. Unique Selling Points & Competitive Advantages', 16, true);
-  addListItems(website.summary.uniqueSellingPoints);
-  addText('Competitive Differentiators:', 14, true);
-  addText(website.salesQA.differentiators);
-  y += 10;
+  addText(`3. ${t('pdf.sections.uniqueSellingPoints')}`, 16, true);
+  addList(website.summary.uniqueSellingPoints);
+  addText(`${t('pdf.sections.competitiveDifferentiators')}:`, 14, true);
+  addText(website.salesQA.differentiators);                     y += 10;
 
-  // 4. Brand Voice
-  addText('4. Brand Voice Guidelines & Communication Style', 16, true);
-  addText(website.summary.brandVoice);
-  y += 10;
+  addText(`4. ${t('pdf.sections.brandVoice')}`, 16, true);
+  addText(website.summary.brandVoice);                          y += 10;
 
-  // 5. Sales Scripts
-  addText('5. Sales Scripts & Greeting Templates', 16, true);
-  addListItems(website.greetings);
-  y += 10;
+  addText(`5. ${t('pdf.sections.salesScripts')}`, 16, true);
+  addList(website.greetings);                                   y += 10;
 
-  // 6. Sales Q&A
-  addText('6. Common Sales Questions & Strategic Answers', 16, true);
-  y += 10;
-  
-  // Add FAQs
-  if (website.faqs && website.faqs.length > 0) {
-    website.faqs.forEach((faq, index) => {
-      addText(`Q${index + 1}: ${faq.question}`, 12, true);
-      addText(`A: ${faq.answer}`);
-      y += 5;
-    });
-  }
-  y += 10;
+  addText(`6. ${t('pdf.sections.salesQA')}`, 16, true);         y += 6;
+  website.faqs?.forEach(({ question, answer }, i) => {
+    addText(`${t('pdf.sections.question')}${i + 1}: ${question}`, 12, true);
+    addText(`${t('pdf.sections.answer')}: ${answer}`);
+  });                                                           y += 10;
 
-  // 7. Value Propositions
-  addText('7. Value Propositions & Customer Benefits', 16, true);
-  addListItems(website.summary.valuePropositions);
+  addText(`7. ${t('pdf.sections.valuePropositions')}`, 16, true);
+  addList(website.summary.valuePropositions);
 
-  // Closing Lines
-  addText('Effective Closing Lines:', 16, true);
-  addListItems(website.salesQA.closingLines);
+  addText(`${t('pdf.sections.closingLines')}:`, 16, true);
+  addList(website.salesQA.closingLines);
 
-  // Generate blob URL
-  const pdfBlob = doc.output('blob');
-  return URL.createObjectURL(pdfBlob);
-}; 
+  /* ────────────── 4.  Return Blob URL ────────────── */
+  return URL.createObjectURL(doc.output('blob'));
+};

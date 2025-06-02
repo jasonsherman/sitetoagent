@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import { Bot, FileText, MessageSquare, BarChart4 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const Hero = () => {
+  const { t } = useTranslation();
+
   return (
     <section className="bg-gradient-to-r from-indigo-600 to-purple-700 text-white py-16">
       <div className="container mx-auto px-4">
@@ -12,7 +15,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
           >
-            Convert Your Website <br />Into an AI Sales Agent
+            {t('hero.title')}
           </motion.h1>
 
           <motion.p
@@ -21,8 +24,7 @@ const Hero = () => {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            Generate a complete AI sales agent training kit with just one click.
-            Scrape your website, build a knowledge base, create greetings, and answer training questions with your own data.
+            {t('hero.subtitle')}
           </motion.p>
 
           <motion.div
@@ -33,19 +35,19 @@ const Hero = () => {
           >
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
               <Bot className="h-8 w-8 mb-2 mx-auto text-indigo-200" />
-              <h3 className="font-medium">AI Overview</h3>
+              <h3 className="font-medium">{t('hero.features.aiOverview')}</h3>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
               <MessageSquare className="h-8 w-8 mb-2 mx-auto text-indigo-200" />
-              <h3 className="font-medium">Business Answers</h3>
+              <h3 className="font-medium">{t('hero.features.businessAnswers')}</h3>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
               <FileText className="h-8 w-8 mb-2 mx-auto text-indigo-200" />
-              <h3 className="font-medium">Knowledge Base</h3>
+              <h3 className="font-medium">{t('hero.features.knowledgeBase')}</h3>
             </div>
             <div className="bg-white/10 backdrop-blur-sm p-4 rounded-lg">
               <BarChart4 className="h-8 w-8 mb-2 mx-auto text-indigo-200" />
-              <h3 className="font-medium">Sales Q&A</h3>
+              <h3 className="font-medium">{t('hero.features.salesQA')}</h3>
             </div>
           </motion.div>
         </div>

@@ -1,13 +1,19 @@
 import { useState } from 'react';
 import { Globe, ArrowRight, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { useLanguage } from '../../contexts/LanguageContext';
+
+type ResponseLanguage = 'en' | 'ja';
 
 interface UrlFormProps {
-  onSubmit: (url: string) => Promise<void>;
+  onSubmit: (url: string, responseLanguage?: ResponseLanguage) => Promise<void>;
   isLoading: boolean;
 }
 
 const UrlForm = ({ onSubmit, isLoading }: UrlFormProps) => {
+  const { t } = useTranslation();
+  const { isJapanese, toggleLanguage } = useLanguage();
   const [url, setUrl] = useState('');
   const [isValid, setIsValid] = useState(true);
   const [errorMessage, setErrorMessage] = useState('');
@@ -15,14 +21,14 @@ const UrlForm = ({ onSubmit, isLoading }: UrlFormProps) => {
   const validateUrl = (value: string) => {
     if (!value.trim()) {
       setIsValid(false);
-      setErrorMessage('Please enter a URL');
+      setErrorMessage(t('form.urlError.empty'));
       return false;
     }
 
     // Simple URL validation
     if (!value.match(/^(https?:\/\/)?([\w-]+\.)+[\w-]+(\/[\w-./?%&=]*)?$/)) {
       setIsValid(false);
-      setErrorMessage('Please enter a valid URL');
+      setErrorMessage(t('form.urlError.invalid'));
       return false;
     }
 
@@ -44,7 +50,7 @@ const UrlForm = ({ onSubmit, isLoading }: UrlFormProps) => {
       formattedUrl = 'https://' + formattedUrl;
     }
 
-    await onSubmit(formattedUrl);
+    await onSubmit(formattedUrl, isJapanese ? 'ja' : undefined);
   };
 
   return (
@@ -55,8 +61,8 @@ const UrlForm = ({ onSubmit, isLoading }: UrlFormProps) => {
       transition={{ duration: 0.5 }}
     >
       <div className="p-6">
-        <h2 className="text-2xl font-bold text-gray-800 mb-2">Generate Your AI Sales Agent Training Kit</h2>
-        <p className="text-gray-600 mb-6">Enter any business website URL and we'll create a complete sales agent training kit.</p>
+        <h2 className="text-2xl font-bold text-gray-800 mb-2">{t('hero.title')}</h2>
+        <p className="text-gray-600 mb-6">{t('hero.subtitle')}</p>
 
         <form onSubmit={handleSubmit}>
           <div className="relative">
@@ -68,7 +74,7 @@ const UrlForm = ({ onSubmit, isLoading }: UrlFormProps) => {
               type="text"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              placeholder="https://vengoai.com"
+              placeholder={t('form.urlPlaceholder')}
               className={`w-full pl-10 pr-24 py-3 border ${!isValid ? 'border-red-300 focus:ring-red-500 focus:border-red-500' : 'border-gray-300 focus:ring-indigo-500 focus:border-indigo-500'} rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-2 bg-purple-100 text-gray-800`}
               disabled={isLoading}
             />
@@ -82,15 +88,29 @@ const UrlForm = ({ onSubmit, isLoading }: UrlFormProps) => {
                 {isLoading ? (
                   <>
                     <Loader2 className="animate-spin -ml-1 mr-2 h-4 w-4" />
-                    Processing
+                    {t('form.processingButton')}
                   </>
                 ) : (
                   <>
-                    Analyze <ArrowRight className="ml-1 h-4 w-4" />
+                    {t('form.analyzeButton')} <ArrowRight className="ml-1 h-4 w-4" />
                   </>
                 )}
               </button>
             </div>
+          </div>
+
+          <div className="mt-4 flex items-center">
+            <label className="relative inline-flex items-center cursor-pointer">
+              <input
+                type="checkbox"
+                className="sr-only peer"
+                checked={isJapanese}
+                onChange={toggleLanguage}
+                disabled={isLoading}
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-indigo-300 rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-indigo-600"></div>
+              <span className="ml-3 text-sm font-medium text-gray-700">{t('form.japaneseToggle')}</span>
+            </label>
           </div>
 
           {!isValid && (
@@ -98,7 +118,7 @@ const UrlForm = ({ onSubmit, isLoading }: UrlFormProps) => {
           )}
 
           <p className="mt-3 text-xs text-gray-500">
-            We'll analyze the site and generate a complete sales agent training kit based on the content.
+            {t('form.description')}
           </p>
         </form>
       </div>

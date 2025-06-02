@@ -1,13 +1,14 @@
 import { motion } from 'framer-motion';
 import { Bot, FileText, MessageSquare, BarChart4, Brain, Sparkles, CheckCircle2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 const steps = [
-  { id: 'scraping', label: 'Scraping website content', icon: Bot },
-  { id: 'business_overview', label: 'Creating business overview', icon: Brain },
-  { id: 'services_products', label: 'Analyzing services & products', icon: FileText },
-  { id: 'unique_selling_points', label: 'Identifying unique selling points', icon: Sparkles },
-  { id: 'brand_voice', label: 'Determining brand voice', icon: MessageSquare },
-  { id: 'sales_qa', label: 'Generating sales Q&A', icon: BarChart4 },
+  { id: 'scraping', icon: Bot },
+  { id: 'business_overview', icon: Brain },
+  { id: 'services_products', icon: FileText },
+  { id: 'unique_selling_points', icon: Sparkles },
+  { id: 'brand_voice', icon: MessageSquare },
+  { id: 'sales_qa', icon: BarChart4 },
 ];
 
 function getStepIndex(stepId: string) {
@@ -15,6 +16,7 @@ function getStepIndex(stepId: string) {
 }
 
 const AnalyzingModal = ({ url, progress, message, step }: { url: string, progress: number, message: string, step: string }) => {
+  const { t } = useTranslation();
   const currentStepIndex = getStepIndex(step);
 
   return (
@@ -29,8 +31,8 @@ const AnalyzingModal = ({ url, progress, message, step }: { url: string, progres
         className="bg-white rounded-xl shadow-xl p-6 max-w-md w-full mx-4"
       >
         <div className="text-center mb-6">
-          <h3 className="text-xl font-semibold text-gray-800 mb-2">Analyzing {url}</h3>
-          <p className="text-gray-600">Please wait while we process your website</p>
+          <h3 className="text-xl font-semibold text-gray-800 mb-2">{t('analyzing.title', { url })}</h3>
+          <p className="text-gray-600">{t('analyzing.subtitle')}</p>
         </div>
 
         <div className="mb-6">
@@ -78,7 +80,7 @@ const AnalyzingModal = ({ url, progress, message, step }: { url: string, progres
                   isActive ? 'font-medium' :
                   isComplete ? 'text-gray-400' : 'text-gray-300'
                 }`}>
-                  {s.label}
+                  {t(`analyzing.steps.${s.id}`)}
                 </span>
               </motion.div>
             );

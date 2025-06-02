@@ -1,5 +1,7 @@
 import { Website } from '../types/website';
 
+type ResponseLanguage = 'en' | 'ja';
+
 const API_BASE_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:5000';
 
 export function transformResponse(data: any, url: any): Website {
@@ -38,14 +40,14 @@ export function transformResponse(data: any, url: any): Website {
   };
 }
 
-export async function analyzeWebsite(url: string): Promise<Website> {
+export async function analyzeWebsite(url: string, responseLanguage?: ResponseLanguage): Promise<Website> {
   try {
     const response = await fetch(`${API_BASE_URL}/api/analyze-url`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ url }),
+      body: JSON.stringify({ url, response_language: responseLanguage }),
     });
 
     if (!response.ok) {
@@ -64,11 +66,11 @@ export async function analyzeWebsite(url: string): Promise<Website> {
   }
 }
 
-export async function startAnalysis(url: string): Promise<string> {
+export async function startAnalysis(url: string, responseLanguage?: ResponseLanguage): Promise<string> {
   const response = await fetch(`${API_BASE_URL}/api/analyze-url`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ url }),
+    body: JSON.stringify({ url, response_language: responseLanguage }),
   });
   if (!response.ok) throw new Error('Failed to start analysis');
   const data = await response.json();

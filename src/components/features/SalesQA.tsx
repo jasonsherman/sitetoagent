@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { motion } from 'framer-motion';
 import { CheckCircle, Copy } from 'lucide-react';
 import { Website } from '../../types/website';
@@ -8,48 +9,51 @@ interface SalesQAProps {
 }
 
 const SalesQA = ({ salesQA }: SalesQAProps) => {
+  const { t } = useTranslation();
   const [copied, setCopied] = useState<string | null>(null);
 
-  const copyToClipboard = (text: string, id: string) => {
-    navigator.clipboard.writeText(text);
-    setCopied(id);
-    setTimeout(() => setCopied(null), 2000);
+  const copyToClipboard = async (text: string, id: string) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      setCopied(id);
+      setTimeout(() => setCopied(null), 2000);
+    } catch (err) {
+      console.error('Failed to copy text: ', err);
+    }
   };
 
   const copyAll = () => {
     const allText = `
-Services or Products:
+${t('salesQA.questions.services')}:
 ${salesQA.services}
 
-Differentiators:
+${t('salesQA.questions.differentiators')}:
 ${salesQA.differentiators}
 
-Most Profitable Items:
+${t('salesQA.questions.profitable')}:
 ${salesQA.profitableItems}
 
-Best Sales Lines:
+${t('salesQA.questions.closingLines')}:
 ${salesQA.closingLines.map((line, i) => `${i + 1}. ${line}`).join('\n')}
     `.trim();
-    
-    navigator.clipboard.writeText(allText);
-    setCopied('all');
-    setTimeout(() => setCopied(null), 2000);
+
+    copyToClipboard(allText, 'all');
   };
 
   const qaItems = [
     {
       id: 'services',
-      question: 'What services or products does your business provide?',
+      question: t('salesQA.questions.services'),
       answer: salesQA.services,
     },
     {
       id: 'differentiators',
-      question: 'How are you different from your competitors?',
+      question: t('salesQA.questions.differentiators'),
       answer: salesQA.differentiators,
     },
     {
       id: 'profitable',
-      question: 'What are your most profitable line items?',
+      question: t('salesQA.questions.profitable'),
       answer: salesQA.profitableItems,
     },
   ];
@@ -62,7 +66,7 @@ ${salesQA.closingLines.map((line, i) => `${i + 1}. ${line}`).join('\n')}
       className="space-y-6"
     >
       <div className="flex justify-between items-center">
-        <h3 className="text-xl font-semibold text-gray-800">Sales Q&A</h3>
+        <h3 className="text-xl font-semibold text-gray-800">{t('salesQA.title')}</h3>
         <button
           onClick={copyAll}
           className="inline-flex items-center px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 text-sm font-medium rounded-md transition-colors"
@@ -70,12 +74,12 @@ ${salesQA.closingLines.map((line, i) => `${i + 1}. ${line}`).join('\n')}
           {copied === 'all' ? (
             <>
               <CheckCircle className="h-4 w-4 mr-1.5 text-green-500" />
-              <span className="text-green-500">Copied!</span>
+              <span className="text-green-500">{t('salesQA.copied')}</span>
             </>
           ) : (
             <>
               <Copy className="h-4 w-4 mr-1.5" />
-              Copy All Answers
+              {t('salesQA.copyAll')}
             </>
           )}
         </button>
@@ -99,12 +103,12 @@ ${salesQA.closingLines.map((line, i) => `${i + 1}. ${line}`).join('\n')}
                 {copied === item.id ? (
                   <>
                     <CheckCircle className="h-4 w-4 mr-1 text-green-500" />
-                    <span className="text-green-500">Copied!</span>
+                    <span className="text-green-500">{t('salesQA.copied')}</span>
                   </>
                 ) : (
                   <>
                     <Copy className="h-4 w-4 mr-1" />
-                    Copy
+                    {t('salesQA.copy')}
                   </>
                 )}
               </button>
@@ -122,7 +126,7 @@ ${salesQA.closingLines.map((line, i) => `${i + 1}. ${line}`).join('\n')}
           transition={{ duration: 0.3, delay: 0.3 }}
         >
           <div className="p-4 bg-gray-50 border-b border-gray-200 flex justify-between items-center">
-            <h4 className="font-medium text-gray-700">What are your 5 best sales lines to close a deal?</h4>
+            <h4 className="font-medium text-gray-700">{t('salesQA.closingLines.title')}</h4>
             <button
               onClick={() => copyToClipboard(salesQA.closingLines.join('\n'), 'closing')}
               className="inline-flex items-center text-sm text-gray-500 hover:text-indigo-600 transition-colors"
@@ -130,12 +134,12 @@ ${salesQA.closingLines.map((line, i) => `${i + 1}. ${line}`).join('\n')}
               {copied === 'closing' ? (
                 <>
                   <CheckCircle className="h-4 w-4 mr-1 text-green-500" />
-                  <span className="text-green-500">Copied!</span>
+                  <span className="text-green-500">{t('salesQA.copied')}</span>
                 </>
               ) : (
                 <>
                   <Copy className="h-4 w-4 mr-1" />
-                  Copy
+                  {t('salesQA.copyClosingLines')}
                 </>
               )}
             </button>
@@ -143,12 +147,15 @@ ${salesQA.closingLines.map((line, i) => `${i + 1}. ${line}`).join('\n')}
           <div className="p-4">
             <ul className="space-y-3">
               {salesQA.closingLines.map((line, index) => (
-                <li key={index} className="flex items-start">
-                  <span className="inline-flex items-center justify-center min-w-6 h-6 rounded-full bg-indigo-100 text-indigo-800 text-xs font-medium mr-2 mt-0.5">
-                    {index + 1}
-                  </span>
-                  <span className="text-gray-700">{line}</span>
-                </li>
+                <motion.li
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1 }}
+                  className="p-4 bg-gray-50 rounded-lg text-gray-600"
+                >
+                  {line}
+                </motion.li>
               ))}
             </ul>
           </div>
