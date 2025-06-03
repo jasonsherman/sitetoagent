@@ -59,14 +59,17 @@
     }
   },
   "knowledgeBase": {
-    "title": "Knowledge Base PDF",
-    "description": "Generate a comprehensive PDF containing all the insights and sales materials extracted from the website.",
-    "generate": "Generate PDF",
-    "generating": "Generating PDF...",
-    "download": "Download PDF",
-    "clickToDownload": "Click here to download your PDF",
+    "title": "Knowledge Base Export",
+    "description": "Generate a comprehensive document containing all the insights and sales materials extracted from the website.",
+    "generatePDF": "Generate PDF",
+    "generateWord": "Generate Word",
+    "generating": "Generating...",
+    "downloadPDF": "Download PDF",
+    "downloadWord": "Download Word",
+    "clickToDownloadPDF": "Click here to download your PDF",
+    "clickToDownloadWord": "Click here to download your Word document",
     "preview": {
-      "title": "PDF Contents Preview:",
+      "title": "Document Contents Preview:",
       "sections": [
         "Business Overview & Company Information",
         "Services & Products Catalog",

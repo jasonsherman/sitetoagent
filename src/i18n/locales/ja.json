@@ -59,14 +59,17 @@
     }
   },
   "knowledgeBase": {
-    "title": "ナレッジベースPDF",
-    "description": "ウェブサイトから抽出したすべての洞察とセールス資料を含む包括的なPDFを生成します。",
-    "generate": "PDFを生成",
-    "generating": "PDFを生成中...",
-    "download": "PDFをダウンロード",
-    "clickToDownload": "PDFをダウンロードするにはここをクリック",
+    "title": "ナレッジベースエクスポート",
+    "description": "ウェブサイトから抽出したすべての洞察とセールス資料を含む包括的なドキュメントを生成します。",
+    "generatePDF": "PDFを生成",
+    "generateWord": "Wordを生成",
+    "generating": "生成中...",
+    "downloadPDF": "PDFをダウンロード",
+    "downloadWord": "Wordをダウンロード",
+    "clickToDownloadPDF": "PDFをダウンロードするにはここをクリック",
+    "clickToDownloadWord": "Wordドキュメントをダウンロードするにはここをクリック",
     "preview": {
-      "title": "PDF内容プレビュー：",
+      "title": "ドキュメント内容プレビュー：",
       "sections": [
         "ビジネス概要と会社情報",
         "サービスと製品カタログ",
